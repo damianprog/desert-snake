@@ -4,17 +4,12 @@ import SnakeBody from "/src/snakeBody.js";
 
 export default class Game {
 
-    updateDimensions(gameWidth, gameHeight) {
-        this.gameWidth = gameWidth;
-        this.gameHeight = gameHeight;
-    }
-
     setApple() {
         const xPositions = [];
         const yPositions = [];
-        for (let i = 0; i < 792; i += 22) {
+        for (let i = 0; i < this.gameWidth; i += 22) {
             xPositions.push(i);
-            if (i < 484) {
+            if (i < this.gameHeight) {
                 yPositions.push(i);
             }
         }
@@ -22,15 +17,26 @@ export default class Game {
         const randomXPositionsIndex = Math.floor(Math.random() * xPositions.length);
         const randomYPositionsIndex = Math.floor(Math.random() * yPositions.length);
 
-        this.apple = new Apple(this, { x: xPositions[randomXPositionsIndex], y: yPositions[randomYPositionsIndex] });
+        this.apple.setPosition({x: xPositions[randomXPositionsIndex], y: yPositions[randomYPositionsIndex]});
     }
 
-    constructor(gameWidth, gameHeight, ctx) {
-        this.updateDimensions(gameWidth, gameHeight);
+    constructor(gameWidth, gameHeight) {
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
         this.snakeBody = new SnakeBody(this);
+        this.apple = new Apple();
         this.setApple();
 
         new InputHandler(this.snakeBody, this);
+    }
+
+    onAppleCollision() {
+        this.setApple();
+        this.snakeBody.setMaxSnakeLength(this.snakeBody.maxSnakeLength + 3);
+    }
+
+    gameOver() {
+       console.log("Game Over!");
     }
 
     draw(ctx) {
@@ -39,8 +45,7 @@ export default class Game {
     }
 
     update() {
-
-
+        this.snakeBody.update();
     }
 
     clear(ctx) {
