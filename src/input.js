@@ -2,22 +2,30 @@ export default class InputHandler {
 
     constructor(snakeBody, game) {
         document.addEventListener("keydown", event => {
-            switch(event.key) {
+            switch (event.key) {
                 case "ArrowDown":
-                    snakeBody.moveDown();    
-                break;
+                    snakeBody.moveDown();
+                    break;
 
                 case "ArrowLeft":
-                    snakeBody.moveLeft();    
-                break;
+                    snakeBody.moveLeft();
+                    break;
 
                 case "ArrowRight":
-                    snakeBody.moveRight();    
-                break;
+                    snakeBody.moveRight();
+                    break;
 
                 case "ArrowUp":
-                    snakeBody.moveUp();    
-                break;
+                    snakeBody.moveUp();
+                    break;
+
+                case " ":
+                    game.start();
+                    break;
+
+                case "Escape":
+                    game.pause();
+                    break;
             }
         });
     }

@@ -5,7 +5,7 @@ export default class SnakeBody {
 
     constructor(game) {
         this.game = game;
-        this.maxSnakeLength = 16;
+        this.maxSnakeLength = 2;
         this.snakeBlocks = [new SnakeBlock(this.game, {x: 22, y: 22})];
         this.currentSnakeLength = 0;
         this.timeoutDone = true;
@@ -14,6 +14,10 @@ export default class SnakeBody {
     }
 
     draw(ctx) {
+        this.snakeBlocks.forEach(block => block.draw(ctx));
+    }
+
+    update() {
         for (this.currentSnakeLength; this.currentSnakeLength < this.maxSnakeLength; this.currentSnakeLength++) {
             let newSnakeBlock = new SnakeBlock(this.game, {x: this.snakeBlocks[0].position.x, y: this.snakeBlocks[0].position.y});
             this.snakeBlocks = [newSnakeBlock, ...this.snakeBlocks];
@@ -30,11 +34,7 @@ export default class SnakeBody {
                 this.timeoutDone = !this.timeoutDone;
             },60);
         }
-
-        this.snakeBlocks.forEach(block => block.draw(ctx));
-    }
-
-    update() {
+        
         this.snakeBlocks.forEach(block => block.update());
     }
 
@@ -63,32 +63,48 @@ export default class SnakeBody {
         this.maxSnakeLength = maxSnakeLength;
     }
 
+    reset() {
+        this.maxSnakeLength = 2;
+        this.currentSnakeLength = 0;
+        this.speedX = 0;
+        this.speedY = 0;
+        this.snakeBlocks = [new SnakeBlock(this.game, {x: 22, y: 22})];
+    }
+
     moveDown() {
-        // if(this.speedY === 0) {
+        const headBlock = this.snakeBlocks[this.snakeBlocks.length - 1];
+        const beforeHeadBlock = this.snakeBlocks[this.snakeBlocks.length - 2];
+        if (headBlock.position.y === beforeHeadBlock.position.y) {
             this.speedX = 0;
             this.speedY = 22;
-        // }
+        }
     }
 
     moveLeft() {
-        // if (this.speedX === 0) {
+        const headBlock = this.snakeBlocks[this.snakeBlocks.length - 1];
+        const beforeHeadBlock = this.snakeBlocks[this.snakeBlocks.length - 2];
+        if (headBlock.position.x === beforeHeadBlock.position.x) {
             this.speedX = -22;
             this.speedY = 0;
-        // }
+        }
     }
 
     moveRight() {
-        // if (this.speedX === 0) {
+        const headBlock = this.snakeBlocks[this.snakeBlocks.length - 1];
+        const beforeHeadBlock = this.snakeBlocks[this.snakeBlocks.length - 2];
+        if (headBlock.position.x === beforeHeadBlock.position.x) {
             this.speedX = 22;
             this.speedY = 0;
-        // }
+        }
     }
 
     moveUp() {
-        // if (this.speedY === 0) {
+        const headBlock = this.snakeBlocks[this.snakeBlocks.length - 1];
+        const beforeHeadBlock = this.snakeBlocks[this.snakeBlocks.length - 2];
+        if (headBlock.position.y === beforeHeadBlock.position.y) {
             this.speedX = 0;
             this.speedY = -22;
-        // }
+        }
     }
 
 }
